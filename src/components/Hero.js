@@ -60,7 +60,7 @@ export default function Hero() {
 
             <Reveal delay={60}>
               <h1 className="font-display text-[clamp(2rem,8vw,4.5rem)] font-bold uppercase leading-[0.95] tracking-tight text-white">
-                We Print Brands
+                We Build Brands
                 <br />
                 That People <span className="text-red">Remember.</span>
               </h1>

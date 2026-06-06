@@ -45,7 +45,7 @@ export default function OgImage() {
               textTransform: "uppercase",
             }}
           >
-            <div style={{ display: "flex" }}>We Print Brands</div>
+            <div style={{ display: "flex" }}>We Build Brands</div>
             <div style={{ display: "flex" }}>
               <span>That People&nbsp;</span>
               <span style={{ color: "#e4002b" }}>Remember.</span>

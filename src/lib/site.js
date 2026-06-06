@@ -1,11 +1,10 @@
-// ── Central site configuration ──────────────────────────────
-// Change these values in ONE place. Used by metadata, JSON-LD,
+// Central site configuration.
+// Change these values in one place. Used by metadata, JSON-LD,
 // sitemap, robots, manifest, OG image, and footer.
 
 export const site = {
   name: "AS Media Services",
   legalName: "AS Media Services",
-  // 👉 IMPORTANT: replace with your real live domain before deploying.
   url: "https://www.asmediaservices.in",
   shortDescription:
     "Printing, signage, fabrication & branding solutions across India.",
@@ -16,17 +15,17 @@ export const site = {
   phone: "+91 98101 71108",
   phoneHref: "+919810171108",
   address: {
-    street: "365 Opposite Raj Modern Public School, Hari Nagar Part-II, Jaitpur, Badarpur",
+    street:
+      "365 Opposite Raj Modern Public School, Hari Nagar Part-II, Jaitpur, Badarpur",
     locality: "New Delhi",
     region: "Delhi",
     postalCode: "110044",
     country: "IN",
   },
-  // Approx coordinates for Badarpur/Jaitpur, New Delhi — verify on Google Maps.
-  geo: { lat: 28.4985, lng: 77.3050 },
+  geo: { lat: 28.4985, lng: 77.305 },
   areaServed: "India",
   sameAs: [
-    // 👉 Add real social profile URLs to strengthen entity SEO.
+    // Add real social profile URLs to strengthen entity SEO.
     // "https://www.facebook.com/...",
     // "https://www.instagram.com/...",
     // "https://www.linkedin.com/company/...",
@@ -42,4 +41,4 @@ export const site = {
 };
 
 export const ogImageAlt =
-  "AS Media Services — We print brands that people remember.";
+  "AS Media Services - We build brands that people remember.";

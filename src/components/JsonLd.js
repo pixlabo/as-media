@@ -26,7 +26,7 @@ export default function JsonLd() {
         legalName: site.legalName,
         url: site.url,
         description: site.description,
-        slogan: "We print brands that people remember.",
+        slogan: "We build brands that people remember.",
         foundingDate: site.foundingYear,
         email: site.email,
         telephone: site.phone,
