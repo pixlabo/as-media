@@ -1,3 +1,6 @@
+import Image from "next/image";
+
+import logoImage from "../../public/logo.png";
 import Reveal from "./Reveal";
 
 const footerLinks = [
@@ -15,10 +18,13 @@ export default function Footer() {
         <div className="grid gap-10 border-b border-white/15 pb-12 lg:grid-cols-12 lg:gap-0">
           {/* Brand */}
           <Reveal variant="left" className="lg:col-span-5 lg:border-r lg:border-white/15 lg:pr-12">
-            <div className="flex items-baseline gap-1.5 font-display text-2xl font-bold tracking-tight">
-              <span className="text-red">AS MEDIA</span>
-              <span className="text-white">SERVICES</span>
-            </div>
+            <a href="#home" className="inline-flex items-center">
+              <Image
+                src={logoImage}
+                alt="AS Media Services"
+                className="h-24 w-auto sm:h-28"
+              />
+            </a>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/60">
               Your trusted partner for printing, branding, signage, and
               fabrication solutions across India.

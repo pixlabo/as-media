@@ -13,7 +13,7 @@ const slides = [
 ];
 
 const stats = [
-  { k: "10+", v: "Years", c: "bg-red" },
+  { k: "15+", v: "Years", c: "bg-red" },
   { k: "500+", v: "Projects", c: "bg-blue" },
   { k: "45+", v: "Team", c: "bg-green" },
   { k: "All India", v: "Reach", c: "bg-yellow" },

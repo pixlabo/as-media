@@ -61,7 +61,7 @@ export default function Faq() {
               fabrication, and branding services. Still have a question?
             </p>
             <a
-              href="#contact"
+              href="tel:+919810171108"
               className="mt-6 inline-block bg-red px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-ink"
             >
               Ask Our Team

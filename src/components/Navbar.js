@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+import logoImage from "../../public/logo.png";
 
 const links = [
   { href: "#about", label: "About" },
@@ -14,13 +17,44 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
+
+      if (currentScrollY <= 16) {
+        setVisible(true);
+      } else if (currentScrollY > lastScrollY + 8) {
+        setVisible(false);
+        setOpen(false);
+      } else if (currentScrollY < lastScrollY - 8) {
+        setVisible(true);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="animate-drop-in sticky top-0 z-50 border-b border-ink/15 bg-ink text-white">
-      <nav className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between">
-        <a href="#home" className="flex items-baseline gap-1.5 font-display text-xl font-bold tracking-tight">
-          <span className="text-red">AS MEDIA</span>
-          <span className="text-white">SERVICES</span>
+    <header
+      className={`sticky top-0 z-50 border-b border-ink/15 bg-ink text-white transition-transform duration-300 ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
+      <nav className="container-px mx-auto flex h-20 max-w-7xl items-center justify-between">
+        <a href="#home" className="flex items-center">
+          <Image
+            src={logoImage}
+            alt="AS Media Services"
+            priority
+            className="h-14 w-auto sm:h-16"
+          />
         </a>
 
         <ul className="hidden items-center gap-7 lg:flex">
@@ -39,7 +73,7 @@ export default function Navbar() {
         <div className="hidden lg:block">
           <a
             href="#contact"
-            className="bg-red px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink"
+            className="bg-red px-6 py-3 text-[13px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink"
           >
             Get Free Quote
           </a>
