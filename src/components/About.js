@@ -86,13 +86,6 @@ function SpeedIcon({ className = "" }) {
   );
 }
 
-const proofItems = [
-  { value: "2013", label: "Established", accent: "bg-red" },
-  { value: "Delhi", label: "Head Office", accent: "bg-blue" },
-  { value: "Pan-India", label: "Execution", accent: "bg-green" },
-  { value: "Premium", label: "Finish", accent: "bg-yellow" },
-];
-
 const serviceChips = [
   "Printing",
   "Signage",
@@ -159,30 +152,9 @@ export default function About() {
                     className="object-cover object-center"
                     priority
                   />
-
-                  <div className="absolute inset-y-0 left-0 z-10 w-[64%] bg-gradient-to-r from-black/46 via-black/18 to-transparent" />
-
-                  <div className="absolute inset-y-0 left-0 z-20 flex items-center px-4 sm:px-6">
-                    <div className="w-full max-w-[240px] text-white">
-                      {proofItems.map((item) => (
-                        <div
-                          key={item.label}
-                          className="py-3 sm:py-4"
-                        >
-                          <span className={`mb-3 block h-1.5 w-10 ${item.accent}`} />
-                          <div className="font-display text-2xl font-bold uppercase leading-none">
-                            {item.value}
-                          </div>
-                          <div className="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-white/70">
-                            {item.label}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
-                <div className="p-5 sm:p-6">
+                <div className="hidden p-5 sm:block sm:p-6">
                   <div className="relative overflow-hidden rounded-[1.1rem] border border-ink/10 bg-paper/60 shadow-[0_10px_22px_rgba(18,18,18,0.05)]">
                     <div className="absolute inset-x-5 top-1/2 hidden h-px -translate-y-1/2 bg-ink/12 sm:block" />
                     <div className="absolute bottom-5 left-1/2 top-5 hidden w-px -translate-x-1/2 bg-ink/12 sm:block" />
