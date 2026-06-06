@@ -1,26 +1,210 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #f4f2ec;
+  --color-ink: #121212;
+  --color-red: #e4002b;
+  --color-blue: #1740d6;
+  --color-yellow: #ffc400;
+  --color-green: #0f8f54;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-grotesk), system-ui, sans-serif;
+
+  /* Kill default rounding everywhere — sharp, signage-like edges */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-full: 9999px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f2ec;
+  --foreground: #121212;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+  /* clip (not hidden) → kills sideways scroll WITHOUT breaking sticky nav */
+  overflow-x: clip;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Belt-and-suspenders: never let any descendant exceed the viewport width */
+* {
+  min-width: 0;
+}
+
+::selection {
+  background: var(--color-red);
+  color: #fff;
+}
+
+.container-px {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .container-px {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* ── Scroll reveal system — clean editorial motion, no bounce ── */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* default: rise up */
+.reveal.v-up { transform: translateY(22px); }
+.reveal.v-down { transform: translateY(-22px); }
+.reveal.v-left { transform: translateX(-32px); }
+.reveal.v-right { transform: translateX(32px); }
+.reveal.v-scale { transform: scale(0.94); }
+.reveal.v-clip {
+  clip-path: inset(0 100% 0 0);
+  opacity: 1;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Animated underline bar that grows in */
+@keyframes grow-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Nav slides in on first paint */
+@keyframes drop-in {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-drop-in {
+  animation: drop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-marquee,
+  .animate-marquee-rev,
+  .animate-drop-in {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+/* Marquee strips */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 26s linear infinite;
+}
+
+.animate-marquee-rev {
+  animation: marquee 30s linear infinite reverse;
+}
+
+/* Underline link used in editorial nav/footer */
+.link-ul {
+  position: relative;
+}
+.link-ul::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background: currentColor;
+  transition: width 0.25s ease;
+}
+.link-ul:hover::after {
+  width: 100%;
+}
+
+/* ── Split-flap (Solari) board ── */
+.flap-cell {
+  perspective: 260px;
+}
+.flap-char {
+  display: block;
+  transform-origin: 50% 100%;
+  backface-visibility: hidden;
+  animation: flap 0.5s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+@keyframes flap {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0%,
+  62% {
+    opacity: 1;
+  }
+  63%,
+  100% {
+    opacity: 0.2;
+  }
+}
+.animate-blink {
+  animation: blink 1.4s steps(1) infinite;
+}
+
+/* 3D parallax tilt wrapper */
+.tilt-scene {
+  perspective: 1100px;
+}
+.tilt-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-char,
+  .animate-blink {
+    animation: none !important;
+  }
+  .tilt-inner {
+    transform: none !important;
+  }
 }
