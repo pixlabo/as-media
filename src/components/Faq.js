@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { faqs } from "@/lib/faqs";
+import ContactLink from "./ContactLink";
+import { site } from "@/lib/site";
 
 function Item({ q, a, index, open, onToggle }) {
   return (
@@ -60,12 +62,14 @@ export default function Faq() {
               Everything you need to know about our printing, signage,
               fabrication, and branding services. Still have a question?
             </p>
-            <a
-              href="tel:+919810171108"
+            <ContactLink
+              type="phone"
+              value={site.phone}
+              href={`tel:${site.phoneHref}`}
               className="mt-6 inline-block bg-red px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-ink"
             >
               Ask Our Team
-            </a>
+            </ContactLink>
           </div>
 
           {/* Right accordion */}

@@ -1,4 +1,6 @@
 import Reveal from "./Reveal";
+import ContactLink from "./ContactLink";
+import { site } from "@/lib/site";
 
 export default function CTA() {
   return (
@@ -30,12 +32,14 @@ export default function CTA() {
             >
               Start Your Project
             </a>
-            <a
-              href="tel:+919810171108"
+            <ContactLink
+              type="phone"
+              value={site.phone}
+              href={`tel:${site.phoneHref}`}
               className="border-2 border-white px-7 py-3 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-red"
             >
               Talk To Our Team
-            </a>
+            </ContactLink>
           </div>
         </Reveal>
       </div>

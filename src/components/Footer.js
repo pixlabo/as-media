@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import logoImage from "../../public/logo.png";
 import Reveal from "./Reveal";
+import ContactLink from "./ContactLink";
+import { site } from "@/lib/site";
 
 const footerLinks = [
   { href: "#about", label: "About" },
@@ -30,18 +32,22 @@ export default function Footer() {
               fabrication solutions across India.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <a
-                href="tel:+919810171108"
+              <ContactLink
+                type="phone"
+                value={site.phone}
+                href={`tel:${site.phoneHref}`}
                 className="bg-red px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink"
               >
                 Get Free Quote
-              </a>
-              <a
-                href="mailto:ajaykharwar87@gmail.com"
+              </ContactLink>
+              <ContactLink
+                type="email"
+                value={site.email}
+                href={`mailto:${site.email}`}
                 className="border-2 border-white/30 px-5 py-2 text-[13px] font-semibold uppercase tracking-wide text-white transition-colors hover:border-white"
               >
                 Email Us
-              </a>
+              </ContactLink>
             </div>
           </Reveal>
 
@@ -79,15 +85,25 @@ export default function Footer() {
               </p>
               <p>
                 <span className="text-white/45">Phone </span>
-                <a href="tel:+919810171108" className="font-medium hover:text-red">
-                  +91 98101 71108
-                </a>
+                <ContactLink
+                  type="phone"
+                  value={site.phone}
+                  href={`tel:${site.phoneHref}`}
+                  className="font-medium hover:text-red"
+                >
+                  {site.phone}
+                </ContactLink>
               </p>
               <p>
                 <span className="text-white/45">Email </span>
-                <a href="mailto:ajaykharwar87@gmail.com" className="font-medium hover:text-red">
-                  ajaykharwar87@gmail.com
-                </a>
+                <ContactLink
+                  type="email"
+                  value={site.email}
+                  href={`mailto:${site.email}`}
+                  className="font-medium hover:text-red"
+                >
+                  {site.email}
+                </ContactLink>
               </p>
             </address>
           </Reveal>

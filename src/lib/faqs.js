@@ -33,6 +33,6 @@ export const faqs = [
   },
   {
     q: "How do I get a free quote or start a project?",
-    a: "Call us at +91 98101 71108 or email ajaykharwar87@gmail.com with your requirement. You can also use the 'Get Free Quote' button on this site, and our team will respond with materials, timeline, and pricing.",
+    a: "Call us at +91 98101 71108 or email ajay@asmediaservices.com with your requirement. You can also use the 'Get Free Quote' button on this site, and our team will respond with materials, timeline, and pricing.",
   },
 ];

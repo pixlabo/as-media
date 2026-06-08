@@ -5,13 +5,13 @@
 export const site = {
   name: "AS Media Services",
   legalName: "AS Media Services",
-  url: "https://www.asmediaservices.in",
+  url: "https://www.asmediaservices.com",
   shortDescription:
     "Printing, signage, fabrication & branding solutions across India.",
   description:
     "AS Media Services delivers large-format printing, premium signage, fabrication, and complete branding solutions for businesses across India since 2013.",
   foundingYear: "2013",
-  email: "ajaykharwar87@gmail.com",
+  email: "ajay@asmediaservices.com",
   phone: "+91 98101 71108",
   phoneHref: "+919810171108",
   address: {
