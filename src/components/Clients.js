@@ -57,7 +57,7 @@ const splitIndex = Math.ceil(clients.length / 2);
 const rowA = clients.slice(0, splitIndex);
 const rowB = clients.slice(splitIndex);
 
-const LOGO_SIZES = "(min-width: 1024px) 224px, (min-width: 640px) 208px, 160px";
+const LOGO_SIZES = "(min-width: 1024px) 224px, (min-width: 640px) 208px, 128px";
 
 function Row({ items, reverse }) {
   // Render the set twice so the keyframe (0 → -50%) loops seamlessly.
@@ -73,7 +73,7 @@ function Row({ items, reverse }) {
         {loop.map((c, i) => (
           <div
             key={`${c.name}-${i}`}
-            className="group/cell flex h-20 w-40 shrink-0 items-center justify-center border-r-2 border-ink bg-white p-5 sm:h-24 sm:w-52 sm:p-6 lg:w-56"
+            className="group/cell flex h-16 w-32 shrink-0 items-center justify-center border-r-2 border-ink bg-white p-3 sm:h-24 sm:w-52 sm:p-6 lg:w-56"
           >
             <div
               className="relative h-full w-full"
@@ -97,8 +97,8 @@ function Row({ items, reverse }) {
 export default function Clients() {
   return (
     <section id="clients" className="border-b-2 border-ink bg-white">
-      <div className="container-px mx-auto max-w-7xl py-14 sm:py-16 lg:py-20">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+      <div className="container-px mx-auto max-w-7xl py-10 sm:py-16 lg:py-20">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-ink/60">
               <span className="h-px w-8 bg-red" />
