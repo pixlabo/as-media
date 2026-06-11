@@ -13,11 +13,34 @@ export default function WorkShowcase({ categories }) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const categoryStripRef = useRef(null);
+  const mobileStripRef = useRef(null);
+  const touchStartX = useRef(null);
 
   const activeCategory = categories[activeCategoryIndex] ?? categories[0];
   const activeImages = activeCategory?.images ?? [];
   const activeImage = activeImages[activeImageIndex] ?? activeImages[0];
   const shouldClampThumbPanel = activeImages.length > 6;
+
+  const goToImage = (index) => {
+    const count = activeImages.length;
+    if (count === 0) return;
+    setActiveImageIndex(((index % count) + count) % count);
+  };
+  const nextImage = () => goToImage(activeImageIndex + 1);
+  const prevImage = () => goToImage(activeImageIndex - 1);
+
+  const handleTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX;
+  };
+  const handleTouchEnd = (event) => {
+    if (touchStartX.current === null) return;
+    const deltaX = event.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(deltaX) > 40) {
+      if (deltaX < 0) nextImage();
+      else prevImage();
+    }
+    touchStartX.current = null;
+  };
 
   const advanceImage = useEffectEvent(() => {
     if (activeImages.length < 2) return;
@@ -54,6 +77,20 @@ export default function WorkShowcase({ categories }) {
   }, [activeCategoryIndex, activeImages.length]);
 
   useEffect(() => {
+    const strip = mobileStripRef.current;
+    if (!strip) return;
+
+    const activeEl = strip.querySelector('[data-active="true"]');
+    if (activeEl) {
+      activeEl.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [activeImageIndex, activeCategoryIndex]);
+
+  useEffect(() => {
     const strip = categoryStripRef.current;
     if (!strip) return undefined;
 
@@ -79,7 +116,7 @@ export default function WorkShowcase({ categories }) {
             type="button"
             aria-label="Scroll categories left"
             onClick={() => scrollCategories(-1)}
-            className="absolute bottom-0 left-0 top-0 z-20 flex w-14 items-center justify-center border-r-2 border-ink bg-paper text-ink transition-colors hover:bg-white"
+            className="absolute bottom-0 left-0 top-0 z-20 hidden w-14 items-center justify-center border-r-2 border-ink bg-paper text-ink transition-colors hover:bg-white sm:flex"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M15 6l-6 6 6 6" />
@@ -92,7 +129,7 @@ export default function WorkShowcase({ categories }) {
             type="button"
             aria-label="Scroll categories right"
             onClick={() => scrollCategories(1)}
-            className="absolute bottom-0 right-0 top-0 z-20 flex w-14 items-center justify-center border-l-2 border-ink bg-paper text-ink transition-colors hover:bg-white"
+            className="absolute bottom-0 right-0 top-0 z-20 hidden w-14 items-center justify-center border-l-2 border-ink bg-paper text-ink transition-colors hover:bg-white sm:flex"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M9 6l6 6-6 6" />
@@ -101,11 +138,11 @@ export default function WorkShowcase({ categories }) {
         ) : null}
 
         {canScrollLeft ? (
-          <div className="pointer-events-none absolute inset-y-0 left-14 z-10 w-10 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-14 z-10 hidden w-10 bg-linear-to-r from-white to-transparent sm:block" />
         ) : null}
 
         {canScrollRight ? (
-          <div className="pointer-events-none absolute inset-y-0 right-14 z-10 w-10 bg-gradient-to-l from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-14 z-10 hidden w-10 bg-linear-to-l from-white to-transparent sm:block" />
         ) : null}
 
         <div
@@ -166,7 +203,126 @@ export default function WorkShowcase({ categories }) {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
+      {/* ── MOBILE / TABLET gallery: swipeable hero + horizontal filmstrip ── */}
+      <div className="space-y-3 lg:hidden">
+        <div className="overflow-hidden border-2 border-ink bg-white">
+          <div
+            className="relative aspect-[4/3] select-none bg-ink/5"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {activeImage ? (
+              <div key={activeImage.src} className="work-image-frame absolute inset-0">
+                <Image
+                  src={activeImage.src}
+                  alt={activeImage.alt}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            ) : null}
+
+            <div className="absolute right-3 top-3 z-10 bg-ink/80 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+              {padNumber(activeImageIndex + 1)} / {padNumber(activeImages.length)}
+            </div>
+
+            {activeImages.length > 1 ? (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous image"
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-ink/55 text-white backdrop-blur-sm active:bg-ink"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M15 6l-6 6 6 6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next image"
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-ink/55 text-white backdrop-blur-sm active:bg-ink"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </button>
+              </>
+            ) : null}
+
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-ink/80 via-ink/30 to-transparent" />
+
+            <div className="absolute inset-x-0 bottom-0 z-[5] p-4">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70">
+                Active Category
+              </p>
+              <h3 className="mt-1 font-display text-2xl font-bold uppercase leading-[0.95] tracking-tight text-white">
+                {activeCategory.name}
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 border-t-2 border-ink bg-paper px-4 py-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink/55">
+                Folder
+              </p>
+              <p className="mt-0.5 font-display text-base font-bold uppercase leading-tight text-ink">
+                {activeCategory.name}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 bg-red" />
+              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-ink/55">
+                Swipe to browse
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={mobileStripRef}
+          className="no-scrollbar flex gap-2 overflow-x-auto pb-1"
+        >
+          {activeImages.map((image, index) => {
+            const selected = index === activeImageIndex;
+
+            return (
+              <button
+                key={image.src}
+                type="button"
+                data-active={selected}
+                aria-label={`Open ${activeCategory.name} image ${index + 1}`}
+                onClick={() => goToImage(index)}
+                className={`relative aspect-[4/3] w-24 shrink-0 overflow-hidden border-2 transition-colors ${
+                  selected ? "border-red" : "border-ink"
+                }`}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
+                <span
+                  className={`absolute bottom-0 left-0 px-1.5 py-0.5 text-[10px] font-bold text-white ${
+                    selected ? "bg-red" : "bg-ink/75"
+                  }`}
+                >
+                  {padNumber(index + 1)}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── DESKTOP gallery: large showcase + side image panel ── */}
+      <div className="hidden gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_420px]">
         <div className="overflow-hidden border-2 border-ink bg-white lg:flex lg:h-[34rem] lg:flex-col">
           <div className="relative aspect-[16/11] border-b-2 border-ink bg-ink/5 lg:h-[28.5rem] lg:flex-none lg:aspect-auto">
             {activeImage ? (
