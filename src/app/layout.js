@@ -74,7 +74,9 @@ export const metadata = {
     images: ["/opengraph-image"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [{ url: "/favicon.jpg", type: "image/jpeg" }],
+    shortcut: "/favicon.jpg",
+    apple: "/favicon.jpg",
   },
   formatDetection: {
     telephone: true,
