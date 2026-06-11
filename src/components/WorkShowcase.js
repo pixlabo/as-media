@@ -81,13 +81,16 @@ export default function WorkShowcase({ categories }) {
     if (!strip) return;
 
     const activeEl = strip.querySelector('[data-active="true"]');
-    if (activeEl) {
-      activeEl.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
+    if (!activeEl) return;
+
+    // Scroll ONLY the filmstrip horizontally — never the page/window.
+    // (scrollIntoView would yank the whole viewport to this section.)
+    const stripRect = strip.getBoundingClientRect();
+    const elRect = activeEl.getBoundingClientRect();
+    const delta =
+      elRect.left - stripRect.left - (strip.clientWidth - activeEl.clientWidth) / 2;
+
+    strip.scrollBy({ left: delta, behavior: "smooth" });
   }, [activeImageIndex, activeCategoryIndex]);
 
   useEffect(() => {
@@ -110,7 +113,36 @@ export default function WorkShowcase({ categories }) {
 
     return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden border-2 border-ink bg-white">
+      {/* ── MOBILE category picker: clean dropdown (no cramped tabs) ── */}
+      <div className="border-2 border-ink bg-white sm:hidden">
+        <div className="border-b-2 border-ink bg-ink px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+          Select Category
+        </div>
+        <div className="relative">
+          <select
+            aria-label="Select work category"
+            value={activeCategoryIndex}
+            onChange={(event) => {
+              setActiveCategoryIndex(Number(event.target.value));
+              setActiveImageIndex(0);
+            }}
+            className="w-full appearance-none bg-white py-3.5 pl-4 pr-14 font-display text-base font-bold uppercase tracking-tight text-ink focus:outline-none"
+          >
+            {categories.map((category, index) => (
+              <option key={category.slug} value={index}>
+                {category.name} — {padNumber(category.images.length)} images
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex w-11 items-center justify-center border-l-2 border-ink bg-red text-white">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div className="relative hidden overflow-hidden border-2 border-ink bg-white sm:block">
         {canScrollLeft ? (
           <button
             type="button"
